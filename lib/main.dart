@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './views/products_overview_screen.dart';
@@ -10,7 +11,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Minha Loja',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
+        accentColor: Colors.orange,
+        fontFamily: 'Lato',
       ),
       home: ProductsOverviewScreen(),
     );
