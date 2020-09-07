@@ -5,15 +5,20 @@ import 'package:shop/providers/item_cart.dart';
 import 'product.dart';
 
 class Cart with ChangeNotifier {
-  Map<String, CartItem> _items;
+  Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get item {
     return {..._items};
   }
 
-  void add(Product product) {
+  int get itemCount {
+    return _items.length;
+  }
+
+  void addItem(Product product) {
     if (_items.containsKey(product.id)) {
       _items.update(product.id, (existItem) {
+        print("Item Existe ${existItem.quantity}");
         return CartItem(
           id: existItem.id,
           title: existItem.title,
