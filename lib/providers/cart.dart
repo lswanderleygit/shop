@@ -15,10 +15,18 @@ class Cart with ChangeNotifier {
     return _items.length;
   }
 
+  double get totalAmount {
+    double total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
+  }
+
   void addItem(Product product) {
     if (_items.containsKey(product.id)) {
       _items.update(product.id, (existItem) {
-        print("Item Existe ${existItem.quantity}");
+        // print("Item Existe ${existItem.quantity}");
         return CartItem(
           id: existItem.id,
           title: existItem.title,
