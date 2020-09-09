@@ -29,6 +29,7 @@ class Cart with ChangeNotifier {
         // print("Item Existe ${existItem.quantity}");
         return CartItem(
           id: existItem.id,
+          productId: product.id,
           title: existItem.title,
           quantity: existItem.quantity + 1,
           price: existItem.price,
@@ -39,11 +40,17 @@ class Cart with ChangeNotifier {
         product.id,
         () => CartItem(
           id: Random().nextDouble().toString(),
+          productId: product.id,
           title: product.title,
           quantity: 1,
           price: product.price,
         ),
       );
     }
+  }
+
+  void removeItem(String productId) {
+    _items.remove(productId);
+    notifyListeners();
   }
 }
