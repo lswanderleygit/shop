@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 
 import './order.dart';
-import './item_cart.dart';
+import './cart.dart';
 
 // provider para pedido
 class Orders with ChangeNotifier {
@@ -13,13 +13,13 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
-  void addOrder(List<CartItem> products, double total) {
+  void addOrder(Cart cart) {
     _orders.insert(
         0,
         Order(
           id: Random().nextDouble().toString(),
-          total: total,
-          products: products,
+          total: cart.totalAmount,
+          products: cart.items.values.toList(),
           date: DateTime.now(),
         ));
 
