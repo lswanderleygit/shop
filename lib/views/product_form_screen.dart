@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:shop/widgets/app_drawer.dart';
+
+import '../providers/product.dart';
 
 class ProductFormScreen extends StatefulWidget {
   @override
@@ -10,7 +13,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   final _priceFocosNode = FocusNode();
   final _descriptionFocosNode = FocusNode();
   final _imageUrlFocosNode = FocusNode();
-  final _imageUrlCoontroller = TextEditingController();
+  final _imageUrlController = TextEditingController();
+  final _form = GlobalKey<FormState>();
+  final _formData = Map<String, Object>();
 
   @override
   void initState() {
@@ -18,8 +23,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     _imageUrlFocosNode.addListener(_updateImage);
   }
 
+  // update component when exit end get most recent updates
   void _updateImage() {
-    // update component when exit end get most recent updates
     setState(() {});
   }
 
@@ -32,16 +37,41 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     _imageUrlFocosNode.dispose();
   }
 
+  void _saveForm() {
+    _form.currentState.save();
+    final newProduct = Product(
+      id: Random().nextDouble().toString(),
+      title: _formData['title'],
+      price: _formData['price'],
+      description: _formData['description'],
+      imageUrl: _formData['imageUrl'],
+    );
+    print(newProduct.id);
+    print(newProduct.title);
+    print(newProduct.price);
+    print(newProduct.description);
+    print(newProduct.imageUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text('Formulário Produto'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              _saveForm();
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
+          key: _form,
           child: ListView(
             children: <Widget>[
               TextFormField(
@@ -50,6 +80,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocosNode);
                 },
+                onSaved: (value) => _formData['title'] = value,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Preço'),
@@ -59,6 +90,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_descriptionFocosNode);
                 },
+                onSaved: (value) => _formData['price'] = double.parse(value),
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Descrição'),
@@ -66,6 +98,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 maxLines: 3,
                 // textInputAction: TextInputAction.next,
                 focusNode: _descriptionFocosNode,
+                onSaved: (value) => _formData['description'] = value,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -76,7 +109,11 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                       keyboardType: TextInputType.url,
                       textInputAction: TextInputAction.done,
                       focusNode: _imageUrlFocosNode,
-                      controller: _imageUrlCoontroller,
+                      controller: _imageUrlController,
+                      onFieldSubmitted: (_) {
+                        _saveForm();
+                      },
+                      onSaved: (value) => _formData['imageUrl'] = value,
                     ),
                   ),
                   Container(
@@ -90,10 +127,10 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                       ),
                     ),
                     alignment: Alignment.center,
-                    child: _imageUrlCoontroller.text.isEmpty
+                    child: _imageUrlController.text.isEmpty
                         ? Text("Informe a URL")
                         : FittedBox(
-                            child: Image.network(_imageUrlCoontroller.text),
+                            child: Image.network(_imageUrlController.text),
                             fit: BoxFit.cover,
                           ),
                   ),
