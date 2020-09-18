@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'product.dart';
 import '../data/dummy_data.dart';
@@ -15,8 +17,16 @@ class Products with ChangeNotifier {
     return _items.length;
   }
 
-  void addProduct(Product product) {
-    _items.add(product);
+  void addProduct(Product newproduct) {
+    _items.add(
+      Product(
+        id: Random().nextDouble().toString(),
+        title: newproduct.title,
+        description: newproduct.description,
+        price: newproduct.price,
+        imageUrl: newproduct.imageUrl,
+      ),
+    );
     notifyListeners();
   }
 }

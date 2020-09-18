@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
+import '../providers/products.dart';
 
 class ProductFormScreen extends StatefulWidget {
   @override
@@ -45,7 +47,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     super.dispose();
     _priceFocosNode.dispose();
     _descriptionFocosNode.dispose();
-    _descriptionFocosNode.removeListener(_updateImage);
+    // _descriptionFocosNode.removeListener(_updateImage);
     _imageUrlFocosNode.dispose();
   }
 
@@ -55,19 +57,18 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     if (!isValid) {
       return;
     }
+
     _form.currentState.save();
+
     final newProduct = Product(
-      id: Random().nextDouble().toString(),
       title: _formData['title'],
       price: _formData['price'],
       description: _formData['description'],
       imageUrl: _formData['imageUrl'],
     );
-    print(newProduct.id);
-    print(newProduct.title);
-    print(newProduct.price);
-    print(newProduct.description);
-    print(newProduct.imageUrl);
+
+    Provider.of<Products>(context, listen: false).addProduct(newProduct);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -186,7 +187,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                     child: _imageUrlController.text.isEmpty
                         ? Text("Informe a URL")
                         : FittedBox(
-                            child: Image.network(_imageUrlController.text),
+                            child: Image.network(
+                              _imageUrlController.text,
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            ),
                             fit: BoxFit.cover,
                           ),
                   ),
