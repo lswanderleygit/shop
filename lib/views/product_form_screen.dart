@@ -34,13 +34,17 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       // get product with parameter
       final product = ModalRoute.of(context).settings.arguments as Product;
 
-      _formData['id'] = product.id;
-      _formData['title'] = product.title;
-      _formData['price'] = product.price;
-      _formData['description'] = product.description;
-      _formData['imageUrl'] = product.imageUrl;
+      if (product != null) {
+        _formData['id'] = product.id;
+        _formData['title'] = product.title;
+        _formData['price'] = product.price;
+        _formData['description'] = product.description;
+        _formData['imageUrl'] = product.imageUrl;
 
-      _imageUrlController.text = product.imageUrl;
+        _imageUrlController.text = product.imageUrl;
+      } else {
+        _formData['price'] = '';
+      }
     }
   }
 
