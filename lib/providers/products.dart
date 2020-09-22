@@ -21,10 +21,10 @@ class Products with ChangeNotifier {
     return _items.length;
   }
 
-  void addProduct(Product newproduct) {
+  Future<void> addProduct(Product newproduct) {
     final url = '${Config.URL_BASE}/products.json';
 
-    http
+    return http
         .post(
       url,
       body: json.encode({
