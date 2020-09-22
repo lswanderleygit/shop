@@ -22,7 +22,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product newproduct) {
-    final url = '${Config.URL_BASE}/products.json';
+    final url = '${Config.URL_BASE}/products';
 
     return http
         .post(
