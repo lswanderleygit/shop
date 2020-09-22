@@ -21,30 +21,31 @@ class Products with ChangeNotifier {
     return _items.length;
   }
 
-  Future<void> addProduct(Product newproduct) {
+  Future<void> addProduct(Product newProduct) async {
     final url = '${Config.URL_BASE}/products';
 
-    return http
-        .post(
+    final response = await http.post(
       url,
       body: json.encode({
-        'title': newproduct.title,
-        'description': newproduct.description,
-        'price': newproduct.price,
-        'imageUrl': newproduct.imageUrl,
-        'isFavorite': newproduct.isFavorite,
+        'title': newProduct.title,
+        'description': newProduct.description,
+        'price': newProduct.price,
+        'imageUrl': newProduct.imageUrl,
+        'isFavorite': newProduct.isFavorite,
       }),
-    )
-        .then((response) {
-      _items.add(Product(
+    );
+
+    _items.add(
+      Product(
         id: json.decode(response.body)['name'],
-        title: newproduct.title,
-        description: newproduct.description,
-        price: newproduct.price,
-        imageUrl: newproduct.imageUrl,
-      ));
-      notifyListeners();
-    });
+        title: newProduct.title,
+        description: newProduct.description,
+        price: newProduct.price,
+        imageUrl: newProduct.imageUrl,
+      ),
+    );
+
+    notifyListeners();
   }
 
   void updateProduct(Product product) {
