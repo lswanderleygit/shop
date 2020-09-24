@@ -9,9 +9,11 @@ import 'product.dart';
 import '../data/dummy_data.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _items = DUMMY_PRODUCTS;
+  List<Product> _items = [];
 
   List<Product> get items => [..._items];
+
+  final _url = '${Config.URL_BASE}/products.json';
 
   List<Product> get favoriteItems {
     return _items.where((product) => product.isFavorite).toList();
@@ -22,10 +24,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product newProduct) async {
-    final url = '${Config.URL_BASE}/products';
-
     final response = await http.post(
-      url,
+      _url,
       body: json.encode({
         'title': newProduct.title,
         'description': newProduct.description,
@@ -46,6 +46,27 @@ class Products with ChangeNotifier {
     );
 
     notifyListeners();
+  }
+
+  Future<void> loadProducts() async {
+    final response = await http.get(_url);
+    Map<String, dynamic> data = json.decode(response.body);
+
+    if (data != null) {
+      data.forEach((productId, productData) {
+        _items.add(Product(
+          id: productId,
+          title: productData['title'],
+          description: productData['description'],
+          price: productData['price'],
+          imageUrl: productData['imageUrl'],
+          isFavorite: productData['isFavorite'],
+        ));
+      });
+    }
+
+    notifyListeners();
+    // return Future.value();
   }
 
   void updateProduct(Product product) {
