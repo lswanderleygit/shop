@@ -90,12 +90,24 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
     final indexProduct = _items.indexWhere((prod) => prod.id == id);
 
     if (indexProduct >= 0) {
-      _items.removeWhere((prod) => prod.id == id);
+      final product = _items[indexProduct];
+
+      // remove the product local
+      _items.remove(product);
       notifyListeners();
+
+      // remove the product firebase
+      final response = await http.delete("$_url/${product.id}");
+
+      // if ocurrs erros register product again
+      if (response.statusCode >= 400) {
+        _items.insert(indexProduct, product);
+        notifyListeners();
+      }
     }
   }
 }
