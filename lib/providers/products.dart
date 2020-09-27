@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:shop/exceptions/http_exceptions.dart';
 
-import '../utils/config_api.dart';
+import '../utils/constants.dart';
 
 import 'product.dart';
 import '../data/dummy_data.dart';
@@ -12,7 +13,7 @@ class Products with ChangeNotifier {
 
   List<Product> get items => [..._items];
 
-  final _url = '${Config.URL_BASE}/products';
+  final _url = '$URL_BASE/products';
 
   List<Product> get favoriteItems {
     return _items.where((product) => product.isFavorite).toList();
@@ -101,12 +102,13 @@ class Products with ChangeNotifier {
       notifyListeners();
 
       // remove the product firebase
-      final response = await http.delete("$_url/${product.id}");
+      final response = await http.delete("$_url/${product.id}.json");
 
       // if ocurrs erros register product again
       if (response.statusCode >= 400) {
         _items.insert(indexProduct, product);
         notifyListeners();
+        throw HttpException('Ocorreu um erro na exclusão do produto.');
       }
     }
   }

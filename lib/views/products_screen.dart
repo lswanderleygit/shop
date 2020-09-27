@@ -17,7 +17,7 @@ class ProductsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Produtos'),
+        title: Text('Gerenciar Produtos'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
