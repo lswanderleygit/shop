@@ -30,7 +30,7 @@ class Product with ChangeNotifier {
   Future<void> toggleFavorite() async {
     _toggleFavorite();
 
-    final url = '$URL_BASE/products/${this.id}.json';
+    final url = '$BASE_URL/products/${this.id}.json';
 
     final response = await http.patch(
       url,
