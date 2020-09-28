@@ -13,7 +13,7 @@ class Products with ChangeNotifier {
 
   List<Product> get items => [..._items];
 
-  final _url = '$BASE_URL/products';
+  final _url = '$Constants.BASE_API_URL/products';
 
   List<Product> get favoriteItems {
     return _items.where((product) => product.isFavorite).toList();

@@ -10,7 +10,7 @@ import './item_cart.dart';
 
 // provider para pedido
 class Orders with ChangeNotifier {
-  static const _url = BASE_URL;
+  static const _url = Constants.BASE_API_URL;
 
   List<Order> _items = [];
 
