@@ -89,6 +89,7 @@ class _OrderButtoonState extends State<OrderButtoon> {
                 setState(() {
                   _isLoading = false;
                 });
+
                 widget.cart.clear();
               });
   }
