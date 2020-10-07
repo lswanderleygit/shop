@@ -6,7 +6,6 @@ import 'package:shop/exceptions/http_exceptions.dart';
 import '../utils/constants.dart';
 
 import 'product.dart';
-import '../data/dummy_data.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
