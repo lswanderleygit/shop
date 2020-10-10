@@ -1,4 +1,5 @@
 class AppRoutes {
+  // ignore: non_constant_identifier_names
   static final AUTH_HOME = '/';
   static final HOME = '/home';
   static final PRODUCTS = '/products';
