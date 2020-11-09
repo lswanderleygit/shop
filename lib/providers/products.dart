@@ -50,7 +50,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product newProduct) async {
     final response = await http.post(
-      "$_url.json",
+      "$_url.json?auth=$_token",
       body: json.encode({
         'title': newProduct.title,
         'description': newProduct.description,
@@ -82,7 +82,7 @@ class Products with ChangeNotifier {
 
     if (indexProduct >= 0) {
       await http.patch(
-        "$_url/${product.id}.json",
+        "$_url/${product.id}.json?auth=$_token",
         body: json.encode({
           'title': product.title,
           'description': product.description,
@@ -106,7 +106,8 @@ class Products with ChangeNotifier {
       notifyListeners();
 
       // remove the product firebase
-      final response = await http.delete("$_url/${product.id}.json");
+      final response =
+          await http.delete("$_url/${product.id}.json?auth=$_token");
 
       // if ocurrs erros register product again
       if (response.statusCode >= 400) {
