@@ -6,11 +6,16 @@ import 'package:shop/exceptions/auth_exceptions.dart';
 import '../utils/constants.dart';
 
 class Auth with ChangeNotifier {
+  String _userId;
   String _token;
   DateTime _expireDate;
 
   bool get isAuth {
     return token != null;
+  }
+
+  String get userId {
+    return isAuth ? _userId : null;
   }
 
   String get token {
@@ -42,6 +47,7 @@ class Auth with ChangeNotifier {
       throw AuthException(responseBody["error"]["message"]);
     } else {
       _token = responseBody["idToken"];
+      _userId = responseBody["localId"];
       _expireDate = DateTime.now().add(
         Duration(
           seconds: int.parse(responseBody["expiresIn"]),
